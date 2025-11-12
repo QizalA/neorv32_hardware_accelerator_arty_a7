@@ -1,0 +1,22 @@
+# Vivado/Vitis generated
+*.xpr
+*.runs/
+*.cache/
+*.Xil/
+*.jou
+*.log
+*.wdb
+*.ltx
+*.ip_user_files/
+*.sim/
+*.hw/
+*.srcs/           # ignore Vivado-managed source tree
+# Bitstreams / exports
+*.bit
+*.bin
+*.mcs
+*.mmi
+*.xsa
+# Misc
+*.dmp
+**/.DS_Store
