@@ -1,0 +1,33 @@
+# Override the default CPU ISA
+MARCH = rv32imc_zicsr_zifencei
+
+# Optimize for size (not O3)
+EFFORT = -Os
+
+# Extra size savers + run mode + syscalls stub
+USER_FLAGS += -ffunction-sections -fdata-sections -flto -Wl,--gc-sections
+USER_FLAGS += -DPERFORMANCE_RUN=1 -DVALIDATION_RUN=0 -DPROFILE_RUN=0
+USER_FLAGS += -DHAS_FLOAT=0 -DMAIN_HAS_NOARGC=1 -DHAS_TIME_H=0
+USER_FLAGS += -DUSE_MTIME=0 -DUSE_MCYCLE=1
+USER_FLAGS += -specs=nosys.specs     # provides weak _fstat/_isatty if needed
+# (You may keep -ggdb if you want, but removing debug info also saves space)
+# USER_FLAGS += -ggdb -gdwarf-3
+
+# Adjust processor IMEM/DMEM **to match your bitstream**
+# If your synthesized IMEM is only 16k, CoreMark will likely not fit.
+# Use at least 32k here *and* in hardware.
+USER_FLAGS += -Wl,--defsym,__neorv32_rom_base=0x00000000
+USER_FLAGS += -Wl,--defsym,__neorv32_rom_size=32k      # <-- set to your actual IMEM (try 32k or 64k)
+
+USER_FLAGS += -Wl,--defsym,__neorv32_ram_base=0x80000000
+USER_FLAGS += -Wl,--defsym,__neorv32_ram_size=512k     # <-- must match your DMEM
+
+# Sources / include stay as you had
+APP_SRC += $(wildcard source/*.c)
+APP_INC += -I include
+
+NEORV32_HOME ?= ../../..
+include $(NEORV32_HOME)/sw/common/common.mk
+# Add nosys stubs for newlib (_fstat, _isatty, etc.)
+USER_FLAGS += -specs=nosys.specs
+

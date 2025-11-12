@@ -1,0 +1,1 @@
+make USER_FLAGS="-march=rv32i_zicsr_zifencei -mabi=ilp32" APP=demo_mat_mul_cfu01 exe

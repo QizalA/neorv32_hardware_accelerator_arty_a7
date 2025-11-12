@@ -1,0 +1,5 @@
+make clean all USER_FLAGS+="-DUSE_CFU -DMEM_METHOD=MEM_STATIC \
+  -Wl,--defsym,__neorv32_rom_size=128k \
+  -DHAS_FLOAT=0 -DCOREMARK_MINIMAL_PRINT=1 \
+  -Os -ffunction-sections -fdata-sections -Wl,--gc-sections \
+  -fomit-frame-pointer -Wno-maybe-uninitialized"

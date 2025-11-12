@@ -1,0 +1,37 @@
+# Application makefile.
+# Use this makefile to configure all relevant CPU / compiler options.
+
+NO_IMAGE_GEN = 1
+
+# Enable CFU by including 'zxcfu' extension
+MARCH = rv32i_zicsr_zifencei
+#MARCH = rv32i_zicsr_zifencei_zxcfu
+
+# Override the default RISC-V GCC prefix
+# RISCV_PREFIX ?= riscv-none-elf-
+
+# Optimization
+EFFORT = -Os
+
+# Extended debug info
+USER_FLAGS += -ggdb -gdwarf-3
+
+# Adjust processor IMEM size
+USER_FLAGS += -Wl,--defsym,__neorv32_rom_size=128k
+
+# Adjust processor DMEM size
+USER_FLAGS += -Wl,--defsym,__neorv32_ram_size=512k
+
+# If needed: override heap size
+# USER_FLAGS += -Wl,--defsym,__neorv32_heap_size=1k
+
+# Optional: add extra source or include paths
+# APP_SRC += $(wildcard ./*.c)
+# APP_INC += -I .
+
+# Path to NEORV32 root
+NEORV32_HOME ?= ../../..
+
+# Include main NEORV32 Makefile
+include $(NEORV32_HOME)/sw/common/common.mk
+
